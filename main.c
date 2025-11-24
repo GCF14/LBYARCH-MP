@@ -39,8 +39,8 @@ void print_sample(int *input, double *output, int height, int width, int sample_
 int verify_conversion(int *input, double *output, int n) {
     const double tolerance = 0.0001; // Margin of Error
     for (int i = 0; i < n; i++) {
-        double expected = (double)input[i] / 255.0; // Standard math vs assembly code
-        double diff = (output[i] - expected);
+        double expected = (double)input[i] / 255.0; // Standard math (expected)
+        double diff = (output[i] - expected); // vs assembly code (output[i])
         if (diff < 0) diff = -diff;
         if (diff > tolerance) {
             printf("ERROR at index %d: input=%d, expected=%.10f, got=%.10f\n", 
@@ -72,6 +72,9 @@ void run_test(int height, int width) {
     
     // Note#4 You must run at least 30 times to get the average execution time.
     int iterations = 30; // Number of iterations for timing
+    if (height == 10 && width == 10) {
+        iterations = 5000; // More iterations for smaller image to get better timing accuracy
+    }
     int64_t start_ticks = clock();
     for (int i = 0; i < iterations; i++) {
         imgCvtGrayIntToDouble(input, output, n); // func.asm main function
@@ -94,8 +97,8 @@ void run_test(int height, int width) {
     
     printf("\nTiming Results:\n");
     if (height == 10 && width == 10) {
-        printf("  Average time per conversion: %.300f microseconds\n", avg_time);
-        printf("  Time per pixel: %.300f nanoseconds\n", (avg_time * 1000.0) / n);
+        printf("  Average time per conversion: %.20f microseconds\n", avg_time);
+        printf("  Time per pixel: %.20f nanoseconds\n", (avg_time * 1000.0) / n);
     } else {
         printf("  Average time per conversion: %.20f microseconds\n", avg_time);
         printf("  Time per pixel: %.20f nanoseconds\n", (avg_time * 1000.0) / n);

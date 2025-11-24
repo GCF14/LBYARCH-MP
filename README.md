@@ -1,13 +1,12 @@
 # Grayscale Image Converter: Int to Double Float
 
-This program converts grayscale images from 8-bit integers (0–255) to double-precision floats (0.0–1.0) using a C driver and an x86-64 assembly routine that uses scalar SSE2 floating-point instructions.
+This program converts grayscale images from 8-bit integers (0–255) to double-precision floats (0.0–1.0) using a C main file and an x86-64 assembly that uses scalar floating-point instructions.
 
 ## Highlights
-
+- **Video Demo**: [Link here later]
 - **Assembly implementation**: Function `imgCvtGrayIntToDouble(int *in, double *out, int n)` implemented in NASM.
-- **SSE2 scalar instructions**: uses `cvtsi2sd`, `mulsd`, and `movsd` to convert each integer to a double and scale it.
-- **Precomputed scale**: 1/255.0 is computed once in assembly and reused for each pixel.
-- **Verification & timing**: `main.c` generates random pixels, verifies the output (tolerance 1e-4), and times the conversion (30 iterations).
+- **SIMD floating-point instructions**: uses `cvtsi2sd`, `divsd`, `mulsd`, and `movsd` to convert each integer to a double and scale it.
+- **Verification & timing**: `main.c` generates random pixels, verifies the output (tolerance of 0.0001), and times the conversion (30 iterations minimum).
 
 ## Build Instructions (Windows - cmd.exe)
 
@@ -22,7 +21,13 @@ gcc main.obj func.obj -o converter.exe
 ## Run
 
 ```cmd
-converter.exe
+converter
+```
+
+Alternative one-liner run
+
+```cmd
+nasm -f win64 func.asm -o func.obj && gcc -c main.c -o main.obj && gcc main.obj func.obj -o converter.exe && converter
 ```
 
 ## Requirements
@@ -36,14 +41,14 @@ converter.exe
 
 - Function exported: `imgCvtGrayIntToDouble` with signature `void imgCvtGrayIntToDouble(int *in, double *out, int n)`.
   - Loads constants `1.0` and `255.0` from the data section and computes `1.0/255.0` into `xmm2`.
-  - For each pixel: load 32-bit int, convert to double with `cvtsi2sd`, multiply by the precomputed `1/255` with `mulsd`, and store the 64-bit double with `movsd`.
-  - Advances the input pointer by 4 bytes and output pointer by 8 bytes each loop iteration.
+  - For each pixel: load 32-bit int, convert to double with `cvtsi2sd`, multiply by the `1/255` computed from `divsd` with `mulsd`, and store the 64-bit double with `movsd`.
+  - Advances the input pointer by 4 bytes for int and output pointer by 8 bytes for double each loop iteration.
 
-### C Driver (`main.c`)
+### C Main File (`main.c`)
 
 - Allocates `int *input` and `double *output` arrays for the image sizes.
 - Generates random pixels using `rand() % 256` and seeds with `time(NULL)`.
-- Calls the assembly routine inside a 30-iteration loop to compute an average conversion time.
+- Calls the assembly routine inside a 30-iteration (minimum) loop to compute an average conversion time.
 - Compares each output element to `(double)input[i] / 255.0` with a tolerance of `0.0001`.
 - Timing: uses `clock()`; average time is reported in microseconds and per-pixel time in nanoseconds.
 - Sample output: the program prints the full 10×10 sample (input & output) and timing for all three test sizes.
