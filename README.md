@@ -1,5 +1,8 @@
 # Grayscale Image Converter: Int to Double Float
 
+This program is made by:
+**Sean Kyle Dimaunahan & Gerard Christian Felipe** from S18B
+
 This program converts grayscale images from 8-bit integers (0–255) to double-precision floats (0.0–1.0) using a C main file and an x86-64 assembly that uses scalar floating-point instructions.
 
 ## Highlights
