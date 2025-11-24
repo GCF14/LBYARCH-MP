@@ -10,7 +10,7 @@ This program converts grayscale images from 8-bit integers (0–255) to double-p
 
 ## Build Instructions (Windows - cmd.exe)
 
-Run these commands in a Windows shell with NASM and GCC available:
+Run these commands in a Windows shell with NASM and GCC available (Make sure that gcc and nasm are in path environment variables):
 
 ```cmd
 nasm -f win64 func.asm -o func.obj
