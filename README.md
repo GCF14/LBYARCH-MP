@@ -6,7 +6,7 @@ This program is made by:
 This program converts grayscale images from 8-bit integers (0–255) to double-precision floats (0.0–1.0) using a C main file and an x86-64 assembly that uses scalar floating-point instructions.
 
 ## Highlights
-- **Video Demo**: [Link here later]
+- **Video Demo**: [LBYARCH Demo - Dimaunahan, Felipe](https://drive.google.com/file/d/1YgRsnTnFw1qgsVcz3HzoIKC5wz-kzOc8/view?usp=sharing)
 - **Assembly implementation**: Function `imgCvtGrayIntToDouble(int *in, double *out, int n)` implemented in NASM.
 - **SIMD floating-point instructions**: uses `cvtsi2sd`, `divsd`, `mulsd`, and `movsd` to convert each integer to a double and scale it.
 - **Verification & timing**: `main.c` generates random pixels, verifies the output (tolerance of 0.0001), and times the conversion (30 iterations minimum).
