@@ -105,3 +105,7 @@ Timing Results:
   Average time per conversion: 1234.567890 microseconds
   Time per pixel: 12345.678900 nanoseconds
 ```
+
+## Program Output Screenshot
+
+![Converter Output](https://github.com/GCF14/LBYARCH-MP/blob/main/Sample%20Progam%20Run.png)
