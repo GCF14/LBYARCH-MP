@@ -73,7 +73,7 @@ void run_test(int height, int width) {
     // Note#4 You must run at least 30 times to get the average execution time.
     int iterations = 30; // Number of iterations for timing
     if (height == 10 && width == 10) {
-        iterations = 5000; // More iterations for smaller image to get better timing accuracy
+        iterations = 3000; // More iterations for smaller image to get better timing accuracy
     }
     int64_t start_ticks = clock();
     for (int i = 0; i < iterations; i++) {
